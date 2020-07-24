@@ -1,0 +1,79 @@
+/* Hides the cloud sync and bin icons, new tab button,
+tab close button, and navigation buttons */
+.sync-and-trash-container, .newtab, button.close,
+.toolbar-insideinput, .toolbar-droptarget {
+	display: none !important;
+}
+
+/* Hide separator between profile picture and extensions */
+.toolbar .profile-popup +
+.toolbar-extensions .button-toolbar:not(.button-narrow):first-of-type:before {
+	display: none;
+}
+
+/* Centre addressfield text */
+.vivaldi-addressfield {
+	text-align: center;
+}
+/* Makes the addressfield and searchfield use the
+current theme's accent colour */
+.addressfield, .searchfield {
+	background-color: var(--colorAccentBg);
+	border: none;
+	padding: 0;
+}
+/* Remove margin spacing for the addressfield */
+.addressfield {
+	margin-left: 0;
+}
+/* Remove addressfield and searchfield border when focused */
+.addressfield:focus-within, .searchfield:focus-within {
+	box-shadow: none;
+}
+
+/* Auto-hide and reveal addressbar on hover */
+/*.toolbar.toolbar-addressbar.toolbar-mainbar.toolbar-large {
+	transition: .4s;
+}*/
+
+/* Sleek Find in Page */
+.find-in-page {
+	position: fixed;
+	z-index: 1;
+	top: 46%;
+	height: 40px;
+	align-self: center;
+	background-color: var(--colorAccentBgFaded);
+	border-radius: 4px;
+	opacity: .6;
+	transition: opacity .3s;
+}
+.find-in-page:hover {
+	opacity: 1;
+}
+.find-in-page input[type=checkbox]:focus:not([tabindex='-1']),
+.find-in-page input[type=search]:focus:not([tabindex='-1']) {
+	border: none;
+}
+.find-in-page .fip-input-label,
+.find-in-page div.toolbar.toolbar-group,
+.find-in-page .button-toolbar {
+	display: none;
+}
+.fip-checkbox-label {
+	position: relative;
+	max-width: 0px;
+	right: 10px;
+	opacity: 0;
+	transition: opacity .3s, transform .3s, max-width 1s ease;
+}
+.find-in-page:hover .toolbar.toolbar-group .fip-checkbox-label {
+	max-width: unset;
+	opacity: inherit;
+	transform: translateX(10px);
+}
+
+/* Selection highlight colour*/
+::selection {
+	background: var(--colorHighlightBg);
+}
