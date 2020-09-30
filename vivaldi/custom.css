@@ -12,22 +12,22 @@ tab close button, and navigation buttons */
 }
 
 /* Centre addressfield text */
-.vivaldi-addressfield {
-	text-align: center;
+.UrlBar-UrlField {
+	text-align: center !important;
 }
 /* Makes the addressfield and searchfield use the
 current theme's accent colour */
-.addressfield, .searchfield {
+.UrlBar-AddressField, .SearchField {
 	background-color: var(--colorAccentBg);
 	border: none;
 	padding: 0;
 }
 /* Remove margin spacing for the addressfield */
-.addressfield {
+/* .addressfield {
 	margin-left: 0;
-}
+} */
 /* Remove addressfield and searchfield border when focused */
-.addressfield:focus-within, .searchfield:focus-within {
+.UrlBar-AddressField:focus-within, .SearchField:focus-within {
 	box-shadow: none;
 }
 
@@ -36,6 +36,14 @@ current theme's accent colour */
 	transition: .4s;
 }*/
 
+/* Colours the HTTPS button */
+.button-addressfield.SiteInfoButton.secure {
+	fill: #fff;
+}
+.button-addressfield.SiteInfoButton.secure:hover {
+	fill: #ddd;
+}
+
 /* Sleek Find in Page */
 .find-in-page {
 	position: fixed;
@@ -43,7 +51,7 @@ current theme's accent colour */
 	top: 46%;
 	height: 40px;
 	align-self: center;
-	background-color: var(--colorAccentBgFaded);
+	background-color: var(--colorAccentBg);
 	border-radius: 4px;
 	opacity: .6;
 	transition: opacity .3s;
