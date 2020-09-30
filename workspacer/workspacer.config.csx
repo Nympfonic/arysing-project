@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 //using System.Text;
 //using System.Threading.Tasks;
@@ -22,9 +23,7 @@ public class TallPlusLayoutEngine : ILayoutEngine
     private int _numInPrimaryOffset = 0;
     private double _primaryPercentOffset = 0;
 
-    //private IWindow _curWindow;
-
-    public TallPlusLayoutEngine() : this(1, .6, .02) { }
+    public TallPlusLayoutEngine() : this(1, .593, .024) { }
 
     public TallPlusLayoutEngine(int numInPrimary, double primaryPercent, double primaryPercentIncrement)
     {
@@ -117,14 +116,6 @@ public class TallPlusLayoutEngine : ILayoutEngine
     {
         return _numInPrimary + _numInPrimaryOffset;
     }
-
-    // public void MinimizeWindow()
-    // {
-    //     //_curWindow.ShowMinimized();
-    // }
-
-    // public void MinimizeAllButFocusedWindow()
-    // { }
 }
 
 public class SideLayoutEngine : ILayoutEngine
@@ -178,35 +169,72 @@ public class SideLayoutEngine : ILayoutEngine
     }
 }
 
-Action<IConfigContext> doConfig = (context) =>
+static void doConfig(IConfigContext context)
 {
     // Plugins
     context.AddFocusIndicator();
     //var actionMenu = context.AddActionMenu();
 
     // Custom Keybinds
-    // context.Keybinds.Subscribe(KeyModifiers.Alt, Keys.OemSemicolon, () => {
-    //         var curWorkspace = context.WorkspaceContainer.FocusedWorkspace;
-    //         var curLayout = context.WorkspaceContainer[curWorkspace.LayoutName];
-    //         MinimizeWindow();
-    //     }, "minimize focused window");
-    //context.Keybinds.Subscribe(KeyModifiers.Alt, Keys.OemPeriod, () => MinimizeAllButFocusedWindow(), "minimize all but focused window");
-    context.WorkspaceContainer.CreateWorkspace("main", new TallPlusLayoutEngine());
-    context.WorkspaceContainer.AssignWorkspaceToMonitor(context.WorkspaceContainer["main"], context.MonitorContainer.GetMonitorAtIndex(0));
-    context.WorkspaceContainer.CreateWorkspace("side", new SideLayoutEngine());
-    context.WorkspaceContainer.AssignWorkspaceToMonitor(context.WorkspaceContainer["side"], context.MonitorContainer.GetMonitorAtIndex(1));
+    var mod = KeyModifiers.Alt;
+    // context.Keybinds.Subscribe(mod, Keys.OemSemicolon, () => {
+    //     var curWorkspace = context.Workspaces.FocusedWorkspace;
+    //     var window = curWorkspace.FocusedWindow;
+    //     if (window != null)
+    //     {
+    //         if (!window.IsMinimized)
+    //         {
+    //             curWorkspace.RemoveWindow(window); // This will remove it from the workspace list entirely so below statement will not work
+    //         }
+    //         else
+    //         {
+    //             curWorkspace.AddWindow(window);
+    //         }
+    //     }
+    // }, "minimize focused window");
+    // context.Keybinds.Subscribe(KeyModifiers.Alt, Keys.OemPeriod, () => MinimizeAllButFocusedWindow(), "minimize all but focused window");
 
+    // Setup Workspaces
+    var sticky = new StickyWorkspaceContainer(context);
+    context.WorkspaceContainer = sticky;
+    var monitors = context.MonitorContainer.GetAllMonitors();
+    sticky.CreateWorkspace(monitors[0], "main", new TallPlusLayoutEngine());
+    sticky.CreateWorkspace(monitors[0], "desktop", new FullLayoutEngine());
+    sticky.CreateWorkspace(monitors[1], "side", new SideLayoutEngine());
     // Filters
-    context.WindowRouter.AddFilter((window) => !window.Title.Contains("Paranoia2"));
-    context.WindowRouter.AddFilter((Window) => !Window.Title.Contains("Friends List"));
-    context.WindowRouter.AddFilter((Window) => !Window.Title.Contains("Steam"));
-    context.WindowRouter.AddFilter((Window) => !Window.Title.Contains("Installer"));
-    context.WindowRouter.AddFilter((Window) => !Window.Title.Contains("SanDisk"));
-    context.WindowRouter.AddFilter((Window) => !Window.Title.Contains("Reflector 3"));
-    context.WindowRouter.AddFilter((Window) => !Window.Title.Contains("Uplay"));
-    context.WindowRouter.AddFilter((Window) => !Window.Title.Contains("Tom Clancy's The Division 2"));
-
+    context.WindowRouter.AddFilter(w => !w.ProcessName.Contains("Adobe"));
+    context.WindowRouter.AddFilter(w => !w.ProcessName.Contains("AfterFX"));
+    context.WindowRouter.AddFilter(w => !w.ProcessName.Contains("BlackDesert64"));
+    context.WindowRouter.AddFilter(w => !w.ProcessName.Contains("javaw"));
+    context.WindowRouter.AddFilter(w => !w.ProcessName.Contains("obs64"));
+    context.WindowRouter.AddFilter(w => !w.ProcessName.Contains("Photoshop"));
+    context.WindowRouter.AddFilter(w => !w.ProcessName.Contains("Rainmeter"));
+    context.WindowRouter.AddFilter(w => !w.ProcessName.Contains("Reflector3"));
+    context.WindowRouter.AddFilter(w => !w.ProcessName.Contains("RemotePlay"));
+    context.WindowRouter.AddFilter(w => !w.ProcessName.Contains("setup"));
+    context.WindowRouter.AddFilter(w => !w.ProcessName.Contains("steam"));
+    context.WindowRouter.AddFilter(w => !w.ProcessName.Contains("update_notifier"));
+    context.WindowRouter.AddFilter(w => !w.Title.Contains("Ableton"));
+    context.WindowRouter.AddFilter(w => !w.Title.Contains("Apple Software Update"));
+    context.WindowRouter.AddFilter(w => !w.Title.Contains("Black Desert Online"));
+    context.WindowRouter.AddFilter(w => !w.Title.Contains("DeadByDaylight"));
+    context.WindowRouter.AddFilter(w => !w.Title.Contains("iCUE"));
+    context.WindowRouter.AddFilter(w => !w.Title.Contains("Installer"));
+    context.WindowRouter.AddFilter(w => !w.Title.Contains("Media Player Classic Home Cinema"));
+    context.WindowRouter.AddFilter(w => !w.Title.Contains("METAL GEAR SOLID V"));
+    context.WindowRouter.AddFilter(w => !w.Title.Contains("Midnight Castle Succubus"));
+    context.WindowRouter.AddFilter(w => !w.Title.Contains("Minecraft Updater"));
+    context.WindowRouter.AddFilter(w => !w.Title.Contains("Paranoia2"));
+    context.WindowRouter.AddFilter(w => !w.Title.Contains("PAYDAY 2"));
+    context.WindowRouter.AddFilter(w => !w.Title.Contains("Reflector 3"));
+    context.WindowRouter.AddFilter(w => !w.Title.Contains("SanDisk"));
+    context.WindowRouter.AddFilter(w => !w.Title.Contains("Setup"));
+    context.WindowRouter.AddFilter(w => !w.Title.Contains("Streamlabs OBS"));
+    context.WindowRouter.AddFilter(w => !w.Title.Contains("Tom Clancy's The Division"));
+    context.WindowRouter.AddFilter(w => !w.Title.Contains("Uplay"));
+    context.WindowRouter.AddFilter(w => !w.Title.Contains("Warframe"));
     // Routes
-    context.WindowRouter.AddRoute((window) => window.Title.Contains("Discord") ? context.WorkspaceContainer["side"] : null);
-};
-return doConfig;
+    context.WindowRouter.AddRoute(w => w.ProcessName.Contains("Discord") ? context.WorkspaceContainer["side"] : null);
+    context.WindowRouter.AddRoute(w => w.Title.Contains("Minecraft Launcher") ? context.WorkspaceContainer["desktop"] : null);
+}
+return new Action<IConfigContext>(doConfig);
