@@ -1,8 +1,12 @@
 /* Hides the cloud sync and bin icons, new tab button,
 tab close button, and navigation buttons */
-.sync-and-trash-container, .newtab, button.close,
+.newtab, button.close,
 .toolbar-insideinput, .toolbar-droptarget {
 	display: none !important;
+}
+
+.sync-and-trash-container {
+	visibility: hidden;
 }
 
 /* Hide separator between profile picture and extensions */
