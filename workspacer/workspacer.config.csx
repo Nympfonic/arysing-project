@@ -1,7 +1,7 @@
 #r "C:\Program Files\workspacer\workspacer.Shared.dll"
 #r "C:\Program Files\workspacer\plugins\workspacer.FocusIndicator\workspacer.FocusIndicator.dll"
-#load "TallPlusLayoutEngine.cs"
-#load "SideLayoutEngine.cs"
+#load "C:\Users\billv\.workspacer\TallPlusLayoutEngine.cs"
+#load "C:\Users\billv\.workspacer\SideLayoutEngine.cs"
 
 using System;
 using System.Collections.Generic;
