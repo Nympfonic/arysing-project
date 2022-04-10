@@ -16,9 +16,18 @@ tab close button, and navigation buttons */
 }
 
 /* Centre addressfield text */
-.UrlBar-UrlField {
-	text-align: center !important;
+.UrlField {
+	justify-content: center;
 }
+.UrlBar-UrlField {
+	text-align: center;
+}
+
+/* Remove addressfield border */
+.SearchField:focus-within, .UrlBar-AddressField:focus-within {
+	outline: none !important;
+}
+
 /* Makes the addressfield and searchfield use the
 current theme's accent colour */
 .UrlBar-AddressField, .SearchField {
@@ -26,14 +35,15 @@ current theme's accent colour */
 	border: none;
 	padding: 0;
 }
+
 /* Remove margin spacing for the addressfield */
 /* .addressfield {
 	margin-left: 0;
 } */
 /* Remove addressfield and searchfield border when focused */
-.UrlBar-AddressField:focus-within, .SearchField:focus-within {
+/* .UrlBar-AddressField:focus-within, .SearchField:focus-within {
 	box-shadow: none;
-}
+} */
 
 /* Auto-hide and reveal addressbar on hover */
 /*.toolbar.toolbar-addressbar.toolbar-mainbar.toolbar-large {
@@ -49,40 +59,50 @@ current theme's accent colour */
 }
 
 /* Sleek Find in Page */
+.find-in-page-wrapper {
+	display: flex;
+	justify-content: center;
+	border-bottom: none;
+}
 .find-in-page {
+	flex-direction: column;
 	position: fixed;
 	z-index: 1;
-	top: 46%;
+	top: 10%;
 	height: 40px;
 	align-self: center;
+	justify-content: flex-start;
 	background-color: var(--colorAccentBg);
 	border-radius: 4px;
 	opacity: .6;
-	transition: opacity .3s;
+	transition: opacity 1s, height 1s ease;
+}
+.find-in-page .toolbar {
+	gap: none !important;
 }
 .find-in-page:hover {
 	opacity: 1;
+	height: 60px;
+	gap: 4px;
 }
-.find-in-page input[type=checkbox]:focus:not([tabindex='-1']),
-.find-in-page input[type=search]:focus:not([tabindex='-1']) {
-	border: none;
-}
+/* .find-in-page:hover .toolbar {
+	gap: 2px !important;
+} */
 .find-in-page .fip-input-label,
 .find-in-page div.toolbar.toolbar-group,
 .find-in-page .button-toolbar {
 	display: none;
 }
-.fip-checkbox-label {
+.find-in-page label.toolbar-group {
 	position: relative;
-	max-width: 0px;
-	right: 10px;
+	max-height: 0;
 	opacity: 0;
-	transition: opacity .3s, transform .3s, max-width 1s ease;
+	transition: opacity .3s, transform 1s ease, max-height 1s ease;
 }
-.find-in-page:hover .toolbar.toolbar-group .fip-checkbox-label {
-	max-width: unset;
+.find-in-page:hover label.toolbar-group {
 	opacity: inherit;
-	transform: translateX(10px);
+	max-height: unset;
+	/* transform: translateY(10px); */
 }
 
 /* Selection highlight colour*/
